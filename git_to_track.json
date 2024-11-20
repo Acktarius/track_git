@@ -1,0 +1,24 @@
+{
+  "git_to_track": [
+    {
+      "name": "keet-mobile-releases",
+      "url": "https://github.com/holepunchto/keet-mobile-releases.git",
+      "tag": "3.13.1"
+    },
+    {
+      "name": "NewPipe",
+      "url": "https://github.com/TeamNewPipe/NewPipe.git",
+      "tag": "0.27.1"
+    },
+    {
+      "name": "conceal-assistant",
+      "url": "https://github.com/Acktarius/conceal-assistant.git",
+      "tag": "1.2.1"
+    },
+    {
+      "name": "Simple-X",
+      "url": "https://github.com/simplex-chat/simplex-chat.git",
+      "tag": "6.2.0-beta.0"
+    }
+  ]
+}
