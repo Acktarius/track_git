@@ -61,6 +61,7 @@ Here's a quick example of how you might use Track Git Tag:
 - Open the application.
 - At a glance monitor a repository for new tags/releases since last record.
 - Add a repository by entering its URL.
+- No need to have the repository clone on the computer, this way you can track release for your phone apk for example.
 
 ## Contributing
 
