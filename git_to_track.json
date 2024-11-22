@@ -11,9 +11,9 @@
       "tag": "0.27.1"
     },
     {
-      "name": "conceal-assistant",
-      "url": "https://github.com/Acktarius/conceal-assistant.git",
-      "tag": "1.2.1"
+      "name": "conceal-wallet",
+      "url": "https://github.com/ConcealNetwork/conceal-wallet-cordova.git",
+      "tag": "4.0.1"
     },
     {
       "name": "Simple-X",
