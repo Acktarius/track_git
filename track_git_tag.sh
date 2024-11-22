@@ -26,6 +26,13 @@ echo "zenity not install\nrun following command to install it\nsudo apt-get inst
 sleep 3
 trip
 fi
+#Zenity templates
+zenwarn() {
+zenity --warning --timeout=12 --text="$@"
+}
+zeninfo() {
+zenity --info --timeout=12 --text="$@"
+}
 
 #check jq installed
 if ! command -v jq &> /dev/null; then
@@ -95,7 +102,6 @@ jq --argjson key $j --arg value ${lastTag[$j]} '.git_to_track[$key].tag |= $valu
 done
 }
 
-
 addTag() {
 newRepo=$(zenity --forms --title="Add new Github to track" --separator "|" --add-entry "name" --add-entry "url")
 case $? in
@@ -103,17 +109,25 @@ case $? in
         newRepoName=$(echo $newRepo | cut -d "|" -f 1)
         newRepoUrl=$(echo $newRepo | cut -d "|" -f 2)
         if [[ ${newRepoUrl:0:8} != "https://" ]] || [[ ${newRepoUrl:(-4)} != ".git" ]]; then
+        zenwarn "format of URL incorrect"
         exit
         fi
         already=$(jq --arg name $newRepoName '.git_to_track[] | select(.name == $name)' git_to_track.json | wc -l)
         if [[ $already -eq 0 ]]; then
         newRepoTag=$(getLastTag $newRepoUrl)
-        tmp=$(mktemp)
-        jq --arg name "$newRepoName" --arg url "$newRepoUrl" --arg tag "$newRepoTag" \
-        '.git_to_track += [{"name": $name, "url": $url, "tag": $tag}]' git_to_track.json > "$tmp" && cp "$tmp" git_to_track.json
-        if [[ $? -eq 0 ]]; then
-        zenity --info --text="git to track added"
-        fi
+            if [[ $newRepoTag == "" ]]; then
+                zenwarn "cannot get tag from the provided URL"
+                exit
+            else
+                tmp=$(mktemp)
+                jq --arg name "$newRepoName" --arg url "$newRepoUrl" --arg tag "$newRepoTag" \
+                '.git_to_track += [{"name": $name, "url": $url, "tag": $tag}]' git_to_track.json > "$tmp" && cp "$tmp" git_to_track.json
+                    if [[ $? -eq 0 ]]; then
+                    zeninfo "git to track added"
+                    fi
+            fi
+        else
+        zeninfo "git already tracked"
         fi
         ;;
     1)
@@ -124,6 +138,7 @@ case $? in
 	;;
 esac
 }
+
 
 zenList=$(list)
 update=$(zenity --list --checklist --height 320 --width 600 --title "Track your favorite github repo " --timeout 25 --extra-button Add --ok-label "Update" --column "Select" --column "index" --column "name" --column "tag" --column "status" $zenList)
@@ -141,3 +156,5 @@ if [[ $? -eq 0 ]]; then
         ;;
     esac    
 fi
+
+rm -f $tmp

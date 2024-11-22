@@ -15,7 +15,7 @@ path=$(pwd)
 shortcutCreator() {
 cat << EOF > $HOME/.local/share/applications/track_git_tag.desktop
 [Desktop Entry]
-Encoding=UTF-8
+Version=1.1
 Name=Track Git
 Path=${path}
 Exec=/bin/bash -c '${path}/track_git_tag.sh ; exit'
